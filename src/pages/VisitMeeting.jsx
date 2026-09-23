@@ -112,6 +112,7 @@ export default function VisitMeeting() {
         <div>
           <SectionHeader
             eyebrow="Visit a Meeting"
+            accent={false}
             title="See YEF in action before you decide."
             subtitle="Visiting a chapter is free. You'll meet local business owners, watch referrals happen in real time, and decide if YEF is right for you."
           />
