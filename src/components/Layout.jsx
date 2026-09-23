@@ -5,7 +5,6 @@ import logo from '../assets/yef.png'
 
 const navLinks = [
   { to: '/', label: 'Home', exact: true },
-  { to: '/about', label: 'About Us' },
   // { to: '/chapters', label: 'Chapters' },
   { to: '/members', label: 'Members' },
   { to: '/visit-meeting', label: 'Visit Meeting' },
@@ -20,7 +19,6 @@ function isMemberProfilePath(pathname) {
 
 function pageTabTitle(pathname) {
   if (pathname === '/members') return 'Members - Yaam Economic Forum'
-  if (pathname === '/about') return 'About Us - Yaam Economic Forum'
   if (pathname === '/visit-meeting') return 'Visit Meeting - Yaam Economic Forum'
   if (pathname === '/events') return 'Events - Yaam Economic Forum'
   return 'Yaam Economic Forum - chennai'

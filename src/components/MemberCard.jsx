@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { ArrowRight, Globe, Mail, Smartphone } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Globe, Mail, Smartphone } from 'lucide-react'
 import Badge from './Badge'
 
 const LinkedinIcon = () => (
@@ -41,6 +41,8 @@ const formatCleanBio = (member) => {
 }
 
 export default function MemberCard({ member }) {
+  const navigate = useNavigate()
+  const profileId = member.uid || member.id
   const initials = getInitials(member.name)
   const category = member.industry ? member.industry.trim() : ''
   const company = member.business || member.company || ''
@@ -53,8 +55,24 @@ export default function MemberCard({ member }) {
   const cleanPhone = phone ? phone.replace(/\D/g, '') : ''
   const whatsappUrl = cleanPhone ? `https://wa.me/${cleanPhone}` : ''
 
+  function openProfile() {
+    if (profileId) navigate(`/members/${profileId}`)
+  }
+
   return (
-    <article className="group relative bg-white dark:bg-[#13192e] border border-[#E8ECF8] dark:border-[#2a3460] rounded-2xl overflow-hidden shadow-[0_6px_18px_rgba(26,43,107,0.06)] hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(26,43,107,0.12)] hover:border-[#1A2B6B]/30 dark:hover:border-[#8899d4]/30 transition-all duration-200 flex flex-col justify-between h-full">
+    <article
+      role="link"
+      tabIndex={0}
+      onClick={openProfile}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          openProfile()
+        }
+      }}
+      aria-label={`View ${member.name || 'member'} profile`}
+      className="group relative bg-white dark:bg-[#13192e] border border-[#E8ECF8] dark:border-[#2a3460] rounded-2xl overflow-hidden shadow-[0_6px_18px_rgba(26,43,107,0.06)] hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(26,43,107,0.12)] hover:border-[#1A2B6B]/30 dark:hover:border-[#8899d4]/30 transition-all duration-200 flex flex-col justify-between h-full cursor-pointer"
+    >
       {/* Top subtle accent bar */}
       <div className="h-1 w-full bg-gradient-to-r from-[#1A2B6B] via-[#D0021B] to-[#1A2B6B] opacity-80 group-hover:opacity-100 transition-opacity" />
 
@@ -135,6 +153,7 @@ export default function MemberCard({ member }) {
                 <a
                   href={`mailto:${email}`}
                   title={`Email: ${email}`}
+                  onClick={(e) => e.stopPropagation()}
                   className="w-9 h-9 rounded-full grid place-items-center bg-[#F5F6FA] dark:bg-[#1c2340] text-[#1A2B6B] dark:text-[#8899d4] hover:bg-[#D0021B] hover:text-white dark:hover:bg-[#D0021B] dark:hover:text-white transition-colors shrink-0"
                   aria-label={`Email ${member.name || 'Member'}`}
                 >
@@ -157,6 +176,7 @@ export default function MemberCard({ member }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={`Chat on WhatsApp: ${phone}`}
+                  onClick={(e) => e.stopPropagation()}
                   className="w-9 h-9 rounded-full grid place-items-center bg-[#F5F6FA] dark:bg-[#1c2340] text-[#059669] dark:text-[#34D399] hover:bg-[#25D366] hover:text-white dark:hover:bg-[#25D366] dark:hover:text-white transition-colors shrink-0"
                   aria-label={`WhatsApp chat with ${member.name || 'Member'}`}
                 >
@@ -179,6 +199,7 @@ export default function MemberCard({ member }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={`Website: ${member.website}`}
+                  onClick={(e) => e.stopPropagation()}
                   className="w-9 h-9 rounded-full grid place-items-center bg-[#F5F6FA] dark:bg-[#1c2340] text-[#9AA3BF] hover:text-[#1A2B6B] dark:hover:text-[#8899d4] hover:bg-[#E8ECF8] dark:hover:bg-[#252f52] transition-colors shrink-0"
                   aria-label="Website"
                 >
@@ -193,6 +214,7 @@ export default function MemberCard({ member }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title="LinkedIn Profile"
+                  onClick={(e) => e.stopPropagation()}
                   className="w-9 h-9 rounded-full grid place-items-center bg-[#F5F6FA] dark:bg-[#1c2340] text-[#0A66C2] dark:text-[#60A5FA] hover:bg-[#0A66C2] hover:text-white transition-colors shrink-0"
                   aria-label="LinkedIn"
                 >
@@ -200,13 +222,6 @@ export default function MemberCard({ member }) {
                 </a>
               )}
             </div>
-
-            <Link
-              to={`/members/${member.uid || member.id}`}
-              className="ml-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#FDE8EB] dark:bg-[#3d0008]/60 text-[#D0021B] dark:text-[#FF8E9A] text-xs sm:text-sm font-bold hover:bg-[#D0021B] hover:text-white dark:hover:bg-[#D0021B] dark:hover:text-white transition-all duration-150 shrink-0"
-            >
-              View <ArrowRight size={14} />
-            </Link>
           </div>
         </div>
       </div>
