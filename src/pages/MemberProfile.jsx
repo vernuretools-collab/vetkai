@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import Badge from '../components/Badge'
 import { SITE_ORIGIN, setSeo, setJsonLd, clearJsonLd } from '../utils/seo'
+import { CHAPTER_LABEL, isThisChapter } from '../data/chapter'
 
 
 const LinkedinIcon = () => (
@@ -152,6 +153,8 @@ export default function MemberProfile() {
           setError('This profile is not publicly accessible.')
         } else if (snap.data().status !== 'active') {
           setError('This profile is not publicly accessible.')
+        } else if (!isThisChapter(snap.data())) {
+          setError('Member not found.')
         } else {
           const data = { uid: snap.id, ...snap.data() }
           setMember(data)
@@ -176,12 +179,12 @@ export default function MemberProfile() {
     const name = member.name || 'Member'
     const extras = [member.industry, member.business].filter(Boolean)
     const extraText = extras.length ? ` ${extras.join(', ')}.` : ''
-    const description = `${name} is a member of YEF Vetkai (Yaam Economic Forum) in Chennai.${extraText}`
+    const description = `${name} is a member of ${CHAPTER_LABEL} (Yaam Economic Forum) in Chennai.${extraText}`
     const path = `/members/${member.uid || uid}`
     const image = member.photoURL || photoURL || undefined
 
     setSeo({
-      title: `${name} | YEF Vetkai | Yaam Economic Forum`,
+      title: `${name} | ${CHAPTER_LABEL} | Yaam Economic Forum`,
       description,
       path,
       image,

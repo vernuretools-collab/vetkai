@@ -16,7 +16,8 @@ import {
   Mail,
 } from 'lucide-react'
 import { db } from '../data/firebase'
-import { collection, getDocs, query, where, limit } from 'firebase/firestore'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { isThisChapter } from '../data/chapter'
 import founderImg from "../assets/founder.jpeg"
 import Secretary from "../assets/Secretary.jpeg"
 import Treasurer from "../assets/Treasurer.jpeg"
@@ -295,11 +296,15 @@ export default function Home() {
       try {
         const q = query(
           collection(db, 'users'),
-          where('role', '==', 'member'),
-          limit(6)
+          where('role', '==', 'member')
         )
         const snap = await getDocs(q)
-        setMembers(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+        setMembers(
+          snap.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .filter((member) => member.status === 'active' && isThisChapter(member))
+            .slice(0, 6)
+        )
       } catch (err) {
         console.error('Home: failed to fetch members', err)
       } finally {
@@ -315,7 +320,7 @@ export default function Home() {
       {/* ── 1. Hero ──────────────────────────────────────────────────────────── */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-12">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="min-w-0">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FDE8EB] dark:bg-[#3d0008]/50 text-[#D0021B] text-xs font-bold uppercase tracking-[0.12em] mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-[#D0021B] animate-pulse" />
               Vetkai
@@ -377,18 +382,18 @@ export default function Home() {
               </a>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 mt-4 pt-6 border-t border-[#E8ECF8] dark:border-[#2a3460]">
-              <div className="flex items-center gap-1.5 bg-[#1A2B6B] px-4 py-2 rounded-full">
-                <Users size={13} className="text-white" />
-                <span className="text-xs text-white font-medium">Tamil business community</span>
+            <div className="flex flex-nowrap items-center gap-1.5 mt-4 pt-6 border-t border-[#E8ECF8] dark:border-[#2a3460] max-w-full max-md:overflow-x-auto max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden">
+              <div className="flex items-center gap-1 bg-[#1A2B6B] px-2.5 py-1.5 rounded-full shrink-0">
+                <Users size={12} className="text-white" />
+                <span className="text-[11px] text-white font-medium whitespace-nowrap">Tamil business community</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-[#1A2B6B] px-4 py-2 rounded-full">
-                <CalendarCheck size={13} className="text-white" />
-                <span className="text-xs text-white font-medium">Regular chapter meetings</span>
+              <div className="flex items-center gap-1 bg-[#1A2B6B] px-2.5 py-1.5 rounded-full shrink-0">
+                <CalendarCheck size={12} className="text-white" />
+                <span className="text-[11px] text-white font-medium whitespace-nowrap">Regular chapter meetings</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-[#1A2B6B] px-4 py-2 rounded-full">
-                <MapPin size={13} className="text-white" />
-                <span className="text-xs text-white font-medium">Porur, Chennai</span>
+              <div className="flex items-center gap-1 bg-[#1A2B6B] px-2.5 py-1.5 rounded-full shrink-0">
+                <MapPin size={12} className="text-white" />
+                <span className="text-[11px] text-white font-medium whitespace-nowrap">Porur, Chennai</span>
               </div>
             </div>
           </div>

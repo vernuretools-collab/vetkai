@@ -1,4 +1,5 @@
 import { db } from './firebase'
+import { isThisChapter } from './chapter'
 import {
   collection, getDocs, query, where,
   doc, setDoc, getDoc, increment, Timestamp
@@ -17,7 +18,7 @@ export const getMembers = async () => {
   const snap = await getDocs(collection(db, 'users'))
   return snap.docs
     .map(d => ({ id: d.id, ...d.data() }))
-    .filter(u => u.role === 'member' && u.status === 'active')
+    .filter(u => u.role === 'member' && u.status === 'active' && isThisChapter(u))
 }
 
 
