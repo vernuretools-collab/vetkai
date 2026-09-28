@@ -1,4 +1,17 @@
-export const SITE_ORIGIN = 'https://vetkai.yef-network.com'
+import { CHAPTER_SLUG } from '../data/chapter'
+
+const FALLBACK_ORIGIN = CHAPTER_SLUG === 'YEF-thozilnagaram'
+  ? 'https://thozilnagaram.yef-network.com'
+  : 'https://vetkai.yef-network.com'
+
+export function siteOrigin() {
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin
+  }
+  return FALLBACK_ORIGIN
+}
+
+export const SITE_ORIGIN = FALLBACK_ORIGIN
 
 function upsertMeta(attr, key, content) {
   if (!content) return
@@ -23,9 +36,10 @@ function upsertCanonical(href) {
 }
 
 export function absoluteUrl(path = '/') {
-  if (!path) return SITE_ORIGIN
+  const origin = siteOrigin()
+  if (!path) return origin
   if (path.startsWith('http://') || path.startsWith('https://')) return path
-  return `${SITE_ORIGIN}${path.startsWith('/') ? path : `/${path}`}`
+  return `${origin}${path.startsWith('/') ? path : `/${path}`}`
 }
 
 export function setSeo({ title, description, path, image, type = 'profile' } = {}) {

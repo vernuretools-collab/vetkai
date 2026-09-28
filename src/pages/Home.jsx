@@ -18,6 +18,7 @@ import {
 import { db } from '../data/firebase'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { isThisChapter } from '../data/chapter'
+import { memberProfilePath } from '../utils/memberUrl'
 import founderImg from "../assets/founder.jpeg"
 import Secretary from "../assets/Secretary.jpeg"
 import Treasurer from "../assets/Treasurer.jpeg"
@@ -539,7 +540,7 @@ export default function Home() {
                     photoURL={member.photoURL}
                     phone={member.phone}
                     email={member.email}
-                    profileHref={`/members/${member.uid || member.id}`}
+                    profileHref={memberProfilePath(member)}
                   />
                 ))}
             </div>

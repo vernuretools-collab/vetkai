@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:thozilnagaram": "vite --mode thozilnagaram",
     "build": "vite build",
+    "build:thozilnagaram": "vite build --mode thozilnagaram",
     "lint": "eslint .",
     "preview": "vite preview"
   },
