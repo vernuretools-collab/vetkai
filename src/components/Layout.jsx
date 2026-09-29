@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom'
 import { Menu, X, Moon, Sun, MapPin, Mail, Phone } from 'lucide-react'
 import logo from '../assets/yef.png'
+import logoWhite from '../assets/yef-white.png'
 
 const navLinks = [
   { to: '/', label: 'Home', exact: true },
@@ -73,7 +74,7 @@ export default function Layout() {
           <Link to="/" className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             <div className="w-14 sm:w-20 md:w-24 shrink-0">
               <img
-                src={logo}
+                src={dark ? logoWhite : logo}
                 alt="Yaam Economic Forum"
                 className="w-full h-auto object-contain"
               />
@@ -194,7 +195,7 @@ export default function Layout() {
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-20 sm:w-24 shrink-0">
                   <img
-                    src={logo}
+                    src={dark ? logoWhite : logo}
                     alt="YEF Vetkai"
                     className="w-full h-auto object-contain"
                   />
